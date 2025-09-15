@@ -1,0 +1,71 @@
+import java.util.Scanner;
+import java.util.Random;
+
+public class GuessTheNumber {
+
+    static Scanner scanner = new Scanner(System.in);
+    static Random random = new Random();
+
+    public static void main(String[] args) {
+        int totalScore = 0;
+        int rounds = 0;
+
+        System.out.println("🎮 Welcome to the Guess the Number Game!");
+        System.out.println("I will think of a number between 1 and 100.");
+        System.out.println("You have to guess it in limited attempts to score points.\n");
+
+        System.out.print("Enter number of rounds you want to play: ");
+        int totalRounds = scanner.nextInt();
+
+        while (rounds < totalRounds) {
+            rounds++;
+            System.out.println("\n🔁 Round " + rounds + " begins!");
+            int score = playRound();
+            totalScore += score;
+            System.out.println("🎯 You scored " + score + " points in this round.");
+            System.out.println("🏆 Total Score so far: " + totalScore);
+        }
+
+        System.out.println("\n🎉 Game Over!");
+        System.out.println("✅ You played " + totalRounds + " rounds.");
+        System.out.println("⭐ Final Score: " + totalScore + " points");
+    }
+
+    public static int playRound() {
+        int numberToGuess = random.nextInt(100) + 1;  // 1 to 100
+        int maxAttempts = 7;
+        int attemptsUsed = 0;
+
+        while (attemptsUsed < maxAttempts) {
+            System.out.print("Enter your guess (1-100): ");
+            int userGuess = scanner.nextInt();
+            attemptsUsed++;
+
+            if (userGuess == numberToGuess) {
+                System.out.println("🎉 Correct! You guessed the number in " + attemptsUsed + " attempts.");
+                return calculateScore(attemptsUsed);
+            } else if (userGuess < numberToGuess) {
+                System.out.println("📈 Too low!");
+            } else {
+                System.out.println("📉 Too high!");
+            }
+        }
+
+        System.out.println("❌ You've used all attempts! The number was: " + numberToGuess);
+        return 0;  // No points if number not guessed
+    }
+
+    public static int calculateScore(int attemptsUsed) {
+        // Higher score for fewer attempts
+        switch (attemptsUsed) {
+            case 1: return 100;
+            case 2: return 90;
+            case 3: return 80;
+            case 4: return 70;
+            case 5: return 60;
+            case 6: return 50;
+            case 7: return 40;
+            default: return 0;
+        }
+    }
+}
